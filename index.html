@@ -46,6 +46,13 @@ function ssQuit(reason) { if (!ssOn) return; ssOn = false; ssTrack('game_quit', 
    When the player turns sound off in the game, go back to 'ambient' so their own music isn't interrupted. */
 function ssAudioSession(off) { try { if (navigator.audioSession) navigator.audioSession.type = off ? 'ambient' : 'playback'; } catch (e) {} }
 try { ssAudioSession(localStorage.getItem('ss_mute') === '1'); } catch (e) { ssAudioSession(false); }
+/* Android back button (app builds): pause a run, then back to the menu; on the title screen return false so the app closes. */
+window.ssBack = function () { try {
+  if (state === 'title' || state === 'load') return false;
+  const run = state === 'play' || state === 'l2' || state === 'l3';
+  if (run && !paused) { paused = true; joy = null; held.slash = false; pointers.clear(); return true; }
+  ssQuit('back_button'); paused = false; joy = null; held.slash = false; pointers.clear(); setState('title'); music = 1; return true;
+} catch (e) { return false; } };
 function ssComic() { try { return PANELS === PANELS1 ? ['intro', 1] : PANELS === PANELS2 ? ['level2', 2] : PANELS === PANELS3 ? ['level3', 3] : PANELS === PANELS3E ? ['ending', 3] : ['lesson', 2]; } catch (e) { return ['other', ssLv]; } }
 </script>
 </head>
