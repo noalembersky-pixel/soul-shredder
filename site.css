@@ -1,0 +1,29 @@
+/* Soul Shredder pages: the game's own look (hell-dark ground, bone text, mint soul-fire, orange title) */
+@font-face{font-family:'Press Start 2P';font-style:normal;font-weight:400;font-display:swap;src:url(/press-start-2p.woff2) format('woff2')}
+:root{--bg:#0b0710;--panel:#1a0c14;--line:#2a0a14;--ink:#f0e4bc;--mute:#bfb28e;--mint:#3ad69c;--orange:#ff8a2a;--red:#ff6a5a;color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.page{max-width:720px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+.top{display:flex;align-items:center;justify-content:space-between;padding:6px 0 18px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--orange);font:12px/1.2 'Press Start 2P',monospace}
+.brand img{width:36px;height:36px;border-radius:8px;image-rendering:pixelated}
+.back{color:var(--mint);text-decoration:none;font:10px/1 'Press Start 2P',monospace;padding:10px 12px;border:2px solid var(--mint);border-radius:6px}
+.hero{text-align:center;margin:4px 0 26px}
+.hero img{width:100%;border-radius:10px;border:3px solid var(--line);image-rendering:pixelated;display:block}
+h1{font:22px/1.4 'Press Start 2P',monospace;color:var(--orange);margin:22px 0 6px;text-shadow:3px 3px 0 #14060e}
+.sub{color:var(--mute);margin:0;font-size:15px}
+h2{font:13px/1.5 'Press Start 2P',monospace;color:var(--mint);margin:30px 0 8px}
+a{color:var(--mint)}
+strong{color:#fff4d6}
+.faq details{background:var(--panel);border:2px solid var(--line);border-radius:8px;margin:10px 0;padding:0 16px}
+.faq summary{cursor:pointer;padding:14px 0;font-weight:700;color:var(--ink);list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:'▸ ';color:var(--mint)}
+.faq details[open] summary::before{content:'▾ '}
+.faq .body{padding:0 0 12px}
+.faq .body p{margin:0 0 10px}
+.btn{display:inline-block;background:var(--mint);color:#14060e;text-decoration:none;font:12px/1 'Press Start 2P',monospace;padding:16px 22px;border-radius:6px;box-shadow:0 4px 0 #1f7a58}
+footer{margin-top:40px;padding-top:18px;border-top:2px solid var(--line);display:flex;flex-wrap:wrap;gap:18px;justify-content:center;font-size:14px}
+footer a{color:var(--mute)}
+.copy{text-align:center;color:#6f6550;font-size:13px;margin-top:14px}
