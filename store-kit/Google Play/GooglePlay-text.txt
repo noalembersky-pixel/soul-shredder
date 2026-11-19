@@ -1,0 +1,49 @@
+SOUL SHREDDER - GOOGLE PLAY CONSOLE
+===================================
+
+App name (13/30):
+Soul Shredder
+
+Short description (67/80):
+A grim reaper quits his job to skate. Escape hell. Shred the earth.
+
+Category: Game > Action
+Tags: Skateboarding, Pixel art, Arcade, Casual, Offline
+Content rating (IARC): fantasy/cartoon violence against non-human characters; no blood, sex, gambling, drugs. Expected around PEGI 7 / Everyone 10+.
+Data safety: no data collected, no data shared
+Contains ads: No   In-app purchases: No
+Target audience: 13+
+Package name: com.soulshredder.game
+
+Full description (1546/4000):
+Meet Shred. Grim reaper. Soul collector since the dawn of time. Zero sick days, zero vacation, zero fun.
+
+Then a skateboard falls into hell, Shred tries it once, and he is hooked. He tells the Devil he quits. The Devil says no. So Shred grabs his board and escapes.
+
+Soul Shredder is a pixel-art skateboarding game told like a comic book. Three levels take Shred out of the fire pits of hell, through the streets of the living and into his first real contest.
+
+LEVEL 1: ESCAPE FROM HELL
+- Fly through hell on your board and slash the demons who come to catch you.
+- Dodge lost souls and grab skate wheels to fill your soul fire.
+- Chain kickflips, grabs, backflips and barrel rolls for big points.
+- Fill the fire meter to unlock Shred Mode: a giant scythe and double points.
+
+LEVEL 2: LEARN TO SKATE
+Five street skaters each teach you one skill. They show you first, then it is your turn.
+- Ollie a growing pile of boards.
+- Kickflip down the stairs.
+- Grind the rail and keep your balance.
+- Hold a manual across the pad.
+- Put it all together in one line over the big gap.
+
+LEVEL 3: THE CONTEST
+Your first contest, with a DJ and a crowd. Three timed sessions. Chain tricks over piles, stairs, rails and gaps to build combos and beat the score to win.
+
+WHAT YOU GET
+- Hand-made pixel art and illustrated comic cutscenes.
+- Original chiptune music and sound effects.
+- Simple touch controls: a stick to move and two buttons for tricks.
+- Plays in landscape, fully offline.
+- No ads, no accounts, no data collected.
+
+Escape hell. Shred the earth.
