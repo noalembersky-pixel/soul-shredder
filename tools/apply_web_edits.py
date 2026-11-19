@@ -74,6 +74,10 @@ function ssSec() {{ return Math.round((performance.now() - ssT0) / 1000); }}
 function ssRun(lv) {{ ssLv = lv; ssOn = true; ssT0 = performance.now(); ssTrack('game_start', {{ level: lv }}); }}
 function ssEnd(ev, p) {{ ssOn = false; p.seconds = ssSec(); ssTrack(ev, p); }}
 function ssQuit(reason) {{ if (!ssOn) return; ssOn = false; ssTrack('game_quit', {{ level: ssLv, reason, seconds: ssSec() }}, {{ send_instantly: true, transport: 'sendBeacon' }}); }}
+/* Sound ignores the phone's silent switch (iPhone, iOS 17+), because the game has its own sound button.
+   When the player turns sound off in the game, go back to 'ambient' so their own music isn't interrupted. */
+function ssAudioSession(off) {{ try {{ if (navigator.audioSession) navigator.audioSession.type = off ? 'ambient' : 'playback'; }} catch (e) {{}} }}
+try {{ ssAudioSession(localStorage.getItem('ss_mute') === '1'); }} catch (e) {{ ssAudioSession(false); }}
 function ssComic() {{ try {{ return PANELS === PANELS1 ? ['intro', 1] : PANELS === PANELS2 ? ['level2', 2] : PANELS === PANELS3 ? ['level3', 3] : PANELS === PANELS3E ? ['ending', 3] : ['lesson', 2]; }} catch (e) {{ return ['other', ssLv]; }} }}
 </script>
 </head>
@@ -112,6 +116,8 @@ rep("else{L.mode='lose';L.t=0;SFX.hit()}", "else{ssEnd('game_over',{level:3,scor
 # leaving a run: pause menu, or app put away / phone locked
 rep("if(inR(p,B.menu)){paused=false;", "if(inR(p,B.menu)){ssQuit('quit_button');paused=false;")
 rep("function appBG(hide){if(hide){", "function appBG(hide){if(hide){ssQuit('app_hidden');")
+# sound button also switches the phone's audio mode (see ssAudioSession)
+rep("function setMute(m){muted=m;", "function setMute(m){muted=m;ssAudioSession(m);")
 # locked levels, share, skipped comics
 rep("lockMsg=2;lockWhich=2;SFX.hit();return", "lockMsg=2;lockWhich=2;ssTrack('locked_level_tap',{level:2});SFX.hit();return")
 rep("lockMsg=2;lockWhich=3;SFX.hit();return", "lockMsg=2;lockWhich=3;ssTrack('locked_level_tap',{level:3});SFX.hit();return")
