@@ -85,6 +85,31 @@ window.ssBack = function () {{ try {{
   if (run && !paused) {{ paused = true; joy = null; held.slash = false; pointers.clear(); return true; }}
   ssQuit('back_button'); paused = false; joy = null; held.slash = false; pointers.clear(); setState('title'); music = 1; return true;
 }} catch (e) {{ return false; }} }};
+/* Music starts on the opening (title) screen, not the second screen. Two causes in Guy's build:
+   (1) the title screen had no music set; (2) phones only unlock sound when a tap ENDS (pointerup / touchend / click)
+   or a key is pressed, and Guy's code starts audio on pointerdown, which doesn't count.
+   Any tap on the title starts Level 1, so on the web (no sound allowed before a tap) the title shows a
+   "TAP TO START" layer: that tap unlocks sound, the layer goes, the title music plays. App builds may play
+   without a tap, so the layer only appears there if the phone still blocks sound. */
+function ssAudioUnlock() {{ try {{ if (typeof initAudio === 'function') initAudio(); }} catch (e) {{}} }}
+['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {{ addEventListener(ev, ssAudioUnlock, {{ capture: true, passive: true }}); }});
+function ssAudioBoot() {{
+  var el = document.getElementById('load');
+  function hide() {{ el.hidden = true; el.style.display = 'none'; }}
+  ssAudioUnlock();
+  setTimeout(function () {{
+    var on = false; try {{ on = !!AC && AC.state === 'running'; }} catch (e) {{}}
+    if (on) {{ hide(); return; }}
+    el.innerHTML = '<span>TAP TO START</span>';
+    el.style.cssText += ';background:rgba(11,7,16,.5);cursor:pointer';
+    var st = document.createElement('style');
+    st.textContent = '#load span{{font-size:14px;letter-spacing:1px;padding:16px 22px;background:#14060e;border:3px solid #3ad69c;border-radius:6px;box-shadow:0 4px 0 #1f7a58;animation:ssblink 1s steps(2,start) infinite}}@keyframes ssblink{{to{{color:#96f0cc;border-color:#96f0cc}}}}';
+    document.head.appendChild(st);
+    var go = function (e) {{ ssAudioUnlock(); hide(); el.removeEventListener('pointerup', go); removeEventListener('keydown', key, true); }};
+    var key = function (e) {{ e.preventDefault(); e.stopImmediatePropagation(); go(); }};
+    el.addEventListener('pointerup', go); addEventListener('keydown', key, true);
+  }}, 250);
+}}
 function ssComic() {{ try {{ return PANELS === PANELS1 ? ['intro', 1] : PANELS === PANELS2 ? ['level2', 2] : PANELS === PANELS3 ? ['level3', 3] : PANELS === PANELS3E ? ['ending', 3] : ['lesson', 2]; }} catch (e) {{ return ['other', ssLv]; }} }}
 </script>
 </head>
@@ -126,6 +151,9 @@ rep("if(inR(p,B.menu)){paused=false;", "if(inR(p,B.menu)){ssQuit('quit_button');
 rep("function appBG(hide){if(hide){", "function appBG(hide){if(hide){ssQuit('app_hidden');")
 # sound button also switches the phone's audio mode (see ssAudioSession)
 rep("function setMute(m){muted=m;", "function setMute(m){muted=m;ssAudioSession(m);")
+# title screen plays the menu music from the start (Guy's build left it silent until the comic/briefing)
+rep("document.getElementById('load').hidden=true;document.getElementById('load').style.display='none';\n  setState('title');",
+    "setState('title');music=1;ssAudioBoot();")
 # locked levels, share, skipped comics
 rep("lockMsg=2;lockWhich=2;SFX.hit();return", "lockMsg=2;lockWhich=2;ssTrack('locked_level_tap',{level:2});SFX.hit();return")
 rep("lockMsg=2;lockWhich=3;SFX.hit();return", "lockMsg=2;lockWhich=3;ssTrack('locked_level_tap',{level:3});SFX.hit();return")
