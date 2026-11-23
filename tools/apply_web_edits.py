@@ -97,8 +97,9 @@ rep('''<title>Soul Shredder</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">''', HEAD.replace('\n<title>Soul Shredder</title>', ''))
 
-# 2. share the real address
-rep("const SHARE_URL='https://oatmealmorning.com/'", f"const SHARE_URL='{URL}'")
+# 2. share the real address (decided 23 Nov 2026)
+# web shares the playable game; app builds share the /get/ page (store badges or "coming soon"), never the web game
+rep("const SHARE_URL='https://oatmealmorning.com/'", f"const SHARE_URL='{URL if a.platform == 'web' else URL + 'get/'}'")
 
 # 3. release mode stays on (dev menu off)
 if "const RELEASE=/*__RELEASE__*/true;" not in s:
