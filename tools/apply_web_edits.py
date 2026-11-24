@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
-"""Turn Guy's release build into the live index.html.
+"""Turn Guy's release build into the game file for the Android or iOS app.
 
-Usage: python3 tools/apply_web_edits.py guy/soul-shredder-release.html index.html [--platform android|ios --version 1.0.0]
+Usage: python3 tools/apply_web_edits.py guy/soul-shredder-release.html OUT/index.html --platform android|ios --version 1.0
+
+Decided 24 Nov 2026 (Noa): the website never has the playable game. This script only makes app builds,
+and refuses to write into docs/ (the published website) or the repo root.
 
 Gameplay is untouched. The script adds: a proper <head> (viewport, title, description,
 link-preview tags, icons), the Press Start 2P font embedded (OFL licence), PostHog
@@ -17,8 +20,11 @@ PH_KEY = 'phc_qo4wiAUHZxUNwLi2nGGmHVEUX4cZxUcMNEMy5vxG6jBW'  # shared Oatmeal Mo
 
 ap = argparse.ArgumentParser()
 ap.add_argument('src'); ap.add_argument('dst')
-ap.add_argument('--platform', default='web'); ap.add_argument('--version', default='')
+ap.add_argument('--platform', required=True, choices=['android', 'ios']); ap.add_argument('--version', required=True)
 a = ap.parse_args()
+_dst = pathlib.Path(a.dst).resolve()
+if _dst.parent == ROOT or ROOT / 'docs' in _dst.parents:
+    sys.exit('REFUSED: the game is never built into the website (docs/) or the repo root. Write it outside the repo, e.g. /tmp/soulshredder-android/index.html')
 
 s = pathlib.Path(a.src).read_text(encoding='utf-8')
 font = base64.b64encode((ROOT / 'tools/press-start-2p-latin-400-normal.woff2').read_bytes()).decode()
