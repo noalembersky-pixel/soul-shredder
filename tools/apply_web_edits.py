@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Turn Guy's release build into the live index.html.
 
-Usage: python3 tools/apply_web_edits.py guy/soul-shredder-release.html index.html [--platform android --version 1.0.0]
+Usage: python3 tools/apply_web_edits.py guy/soul-shredder-release.html index.html [--platform android|ios --version 1.0.0]
 
 Gameplay is untouched. The script adds: a proper <head> (viewport, title, description,
 link-preview tags, icons), the Press Start 2P font embedded (OFL licence), PostHog
@@ -162,6 +162,17 @@ rep("if(state==='comic'){if(inR(p,CB().skip)){comicEnd();return}",
     "if(state==='comic'){if(inR(p,CB().skip)){const c=ssComic();ssTrack('cutscene_skip',{cutscene:c[0],level:c[1],panel:cp+1});comicEnd();return}")
 rep("if(e.code==='Escape'&&state==='comic'){comicEnd();return}",
     "if(e.code==='Escape'&&state==='comic'){const c=ssComic();ssTrack('cutscene_skip',{cutscene:c[0],level:c[1],panel:cp+1});comicEnd();return}")
+
+# 5. iOS app build only (lessons from SK8's TestFlight run, Nov 2026)
+if a.platform == 'ios':
+    # iPhone can leave the audio 'interrupted' (calls, Siri, app switch), not just 'suspended': resume from any non-running state,
+    # or the game stays silent until it is reinstalled
+    rep("function initAudio(){if(AC){if(AC.state==='suspended')AC.resume();return}",
+        "function initAudio(){if(AC){if(AC.state!=='running')AC.resume();return}")
+    rep("else if(AC&&AC.state==='suspended')AC.resume()", "else if(AC&&AC.state!=='running')AC.resume()")
+    # share through the native iOS share sheet (Capacitor Share plugin); falls back to Guy's web share if the plugin is missing
+    rep("function shareGame(){SFX.page();ssTrack(",
+        "function shareGame(){SFX.page();try{if(window.Capacitor&&Capacitor.nativePromise){Capacitor.nativePromise('Share','share',{title:'Soul Shredder',text:SHARE_TXT,url:SHARE_URL,dialogTitle:'Share Soul Shredder'}).catch(function(){});ssTrack('share_click',{where:state==='title'?'title':'pause',level:state==='title'?0:ssLv});return}}catch(e){}ssTrack(")
 
 s = s.rstrip() + '\n</body>\n</html>\n'
 pathlib.Path(a.dst).write_text(s, encoding='utf-8')
