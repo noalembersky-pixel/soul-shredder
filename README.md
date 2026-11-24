@@ -7,7 +7,7 @@ Website (store page only): https://soulshredder.oatmealmorning.com
 
 - `docs/`: the website, and the only folder GitHub Pages publishes (Settings → Pages → Branch `main` / `/docs`).
   - `index.html`: home page = a copy of `get/` (store badges or "Coming soon"), canonical = the root address, PostHog `page: 'home'`.
-  - `get/`: store landing page the apps share. Keep the address; the apps link to it.
+  - `get/`: store landing page the apps share (PostHog `page: 'get'`). Keep the address; the apps link to it.
   - `privacy/`, `support/`: policy and support pages (also used by the app stores).
   - `CNAME`: the web address. Never remove it.
 - `guy/soul-shredder-release.html`: Guy's release build, exactly as received. Not published.
